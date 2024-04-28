@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Cost Prediction</title>
+    <style>
+        /* Reset default styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Body styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        /* Header styles */
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .company-logo {
+            max-width: 20%; /* Adjust as needed */
+            height: auto;
+            display: inline-block;
+            vertical-align: middle;
+            width: 100%; /* Ensures the logo fills its container */
+        } 
+
+        /* Container styles */
+        .container {
+            max-width: 800px; /* Adjust max-width as needed */
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header styles */
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Welcome message styles */
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        /* Form styles */
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Result styles */
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FRajiv_Gandhi_Institute_of_Petroleum_Technology&psig=AOvVaw1L9V7-QVHNk6je1ZTPeBPD&ust=1714418629663000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCMDA-5rR5YUDFQAAAAAdAAAAABAJ" alt="Company Logo" class="company-logo">
+        <span class="company-name">RGIPT Health Club</span>
+    </div>
+
+    <div class="container">
+        <h1>Insurance Cost Prediction</h1>
+        <p class="welcome-message">Welcome to our RGIPT Health Club! We believe that health insurance and insurance, in general, are indispensable pillars of financial security and well-being. In an uncertain world, these safeguards provide peace of mind, ensuring that unexpected medical expenses or unforeseen circumstances don't derail your financial stability. Explore our resources to understand the vital role insurance plays in safeguarding your health and future.</p>
+        <form id="predictionForm">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" min="18" required>
+            
+            <label for="sex">Sex:</label>
+            <select id="sex" name="sex">
+                <option value="0">Female</option>
+                <option value="1">Male</option>
+            </select>
+            
+            <label for="bmi">BMI:</label>
+            <input type="number" id="bmi" name="bmi" min="0" step="0.01" required>
+            
+            <label for="children">Number of Children:</label>
+            <input type="number" id="children" name="children" min="0" required>
+            
+            <label for="smoker">Smoker:</label>
+            <select id="smoker" name="smoker">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+            
+            <button type="submit">Predict Cost</button>
+        </form>
+        <p class="result" id="predictionResult"></p>
+    </div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('predictionResult').innerText = `Error: ${data.error}`;
+                } else {
+                    document.getElementById('predictionResult').innerText = `Predicted Cost: ₹${data.prediction.toFixed(2)} Per Month`;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
