@@ -112,7 +112,7 @@
 </head>
 <body>
     <div class="header">
-        <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FRajiv_Gandhi_Institute_of_Petroleum_Technology&psig=AOvVaw1L9V7-QVHNk6je1ZTPeBPD&ust=1714418629663000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCMDA-5rR5YUDFQAAAAAdAAAAABAJ" alt="Company Logo" class="company-logo">
+        <img src="LOGO_Jais(Bi-Lingual).png" alt="RGIPT Logo" class="company-logo">
         <span class="company-name">RGIPT Health Club</span>
     </div>
 
@@ -120,7 +120,7 @@
         <h1>Insurance Cost Prediction</h1>
         <p class="welcome-message">Welcome to our RGIPT Health Club! We believe that health insurance and insurance, in general, are indispensable pillars of financial security and well-being. In an uncertain world, these safeguards provide peace of mind, ensuring that unexpected medical expenses or unforeseen circumstances don't derail your financial stability. Explore our resources to understand the vital role insurance plays in safeguarding your health and future.</p>
         <form id="predictionForm">
-            <label for="age">Age:</label>
+            <label for="age">Age(Model Trained on Values >=20 only):</label>
             <input type="number" id="age" name="age" min="18" required>
             
             <label for="sex">Sex:</label>
@@ -129,7 +129,7 @@
                 <option value="1">Male</option>
             </select>
             
-            <label for="bmi">BMI:</label>
+            <label for="bmi">BMI(Model Trained on Values >22 only):</label>
             <input type="number" id="bmi" name="bmi" min="0" step="0.01" required>
             
             <label for="children">Number of Children:</label>
@@ -159,7 +159,12 @@
                 if (data.error) {
                     document.getElementById('predictionResult').innerText = `Error: ${data.error}`;
                 } else {
-                    document.getElementById('predictionResult').innerText = `Predicted Cost: ₹${data.prediction.toFixed(2)} Per Month`;
+                    const predictedCost = data.prediction.toFixed(2);
+                    if (predictedCost < 25) {
+                        document.getElementById('predictionResult').innerText = "No data available for this range";
+                    } else {
+                        document.getElementById('predictionResult').innerText = `Predicted Cost: ₹${predictedCost} Per Month`;
+                    }
                 }
             })
             .catch(error => console.error('Error:', error));
